@@ -9,10 +9,6 @@ init();
 animate();
 
 function init() {
-    // Create camera.
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 100 );
-    camera.position.z = 10;
-
     // Create scene.
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xe0e0e0 );
@@ -39,7 +35,11 @@ function init() {
     // Add to page.
     document.body.appendChild( renderer.domElement );
 
-    // Create camera control.
+    // Create the camera and position above the ground.
+    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 100 );
+    camera.position.set( 0, 10, 20 );
+
+    // Add camera control.
     let controls = new OrbitControls( camera, renderer.domElement );
     controls.maxPolarAngle = Math.PI * 0.5;
     controls.minDistance = 10;
