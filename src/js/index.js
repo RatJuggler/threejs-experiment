@@ -1,6 +1,7 @@
 import '../css/styles.css';
 import * as THREE from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 var camera, scene, renderer, cube, stats;
 
@@ -24,6 +25,12 @@ function init() {
 
     document.body.appendChild( renderer.domElement );
 
+    let controls = new OrbitControls( camera, renderer.domElement );
+    controls.maxPolarAngle = Math.PI * 0.5;
+    controls.minDistance = 10;
+    controls.maxDistance = 50;
+
+    // Show stats.
     stats = new Stats();
     document.body.appendChild( stats.dom );
 
@@ -38,8 +45,8 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame( animate );
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+    // cube.rotation.x += 0.01;
+    // cube.rotation.y += 0.01;
     renderer.render( scene, camera );
     stats.update();
 }
