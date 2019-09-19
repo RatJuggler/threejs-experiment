@@ -24,10 +24,11 @@ function init() {
     ground.rotation.x = - Math.PI / 2;
     scene.add( ground );
 
-    // Create cube and add to scene.
+    // Create cube and add to scene above the ground.
     let cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
     let cubeMaterial = new THREE.MeshNormalMaterial();
     cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
+    cube.position.y = 5;
     scene.add( cube );
 
     // Create renderer.
