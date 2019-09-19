@@ -1,5 +1,5 @@
-require('../css/styles.css');
-const THREE = require('three');
+import '../css/styles.css';
+import * as THREE from 'three';
 
 var camera, scene, renderer, cube;
 
