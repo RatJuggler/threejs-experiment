@@ -11,6 +11,7 @@ function init() {
     camera.position.z = 10;
 
     scene = new THREE.Scene();
+    scene.background = new THREE.Color( 0xe0e0e0 );
     let geometry = new THREE.BoxGeometry( 4, 4, 4 );
     let material = new THREE.MeshNormalMaterial();
     cube = new THREE.Mesh( geometry, material );
