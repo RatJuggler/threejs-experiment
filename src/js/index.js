@@ -1,7 +1,8 @@
 import '../css/styles.css';
 import * as THREE from 'three';
+import Stats from 'three/examples/jsm/libs/stats.module.js';
 
-var camera, scene, renderer, cube;
+var camera, scene, renderer, cube, stats;
 
 init();
 animate();
@@ -23,6 +24,9 @@ function init() {
 
     document.body.appendChild( renderer.domElement );
 
+    stats = new Stats();
+    document.body.appendChild( stats.dom );
+
     window.addEventListener( 'resize', onWindowResize, false );
 }
 
@@ -37,4 +41,5 @@ function animate() {
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
     renderer.render( scene, camera );
+    stats.update();
 }
