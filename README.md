@@ -1,7 +1,8 @@
 # threejs-experiment
 
 ![GitHub](https://img.shields.io/github/license/RatJuggler/threejs-experiment)
-[![David](https://david-dm.org/RatJuggler/threejs-experiment.svg)](https://david-dm.org/RatJuggler/threejs-experiment)
+[![David](https://david-dm.org/RatJuggler/threejs-experiment/dev-status.svg)](https://david-dm.org/RatJuggler/threejs-experiment?type=dev)
+[![David](https://david-dm.org/RatJuggler/threejs-experiment/status.svg)](https://david-dm.org/RatJuggler/threejs-experiment)
 ![GitHub](https://img.shields.io/github/package-json/v/RatJuggler/threejs-experiment)
 
 
@@ -24,6 +25,8 @@ Start a development server with:
 ```
 $ npm run start
 ```
+Then view the output at: http://localhost:8080/
+
 To build and preview the code for deployment use:
 ```
 $ npm run preview
