@@ -21,19 +21,19 @@
     "url": "https://github.com/RatJuggler/threejs-experiment/issues"
   },
   "dependencies": {
-    "three": "^0.108.0"
+    "three": "^0.113.2"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^3.0.0",
-    "css-loader": "^3.2.0",
+    "css-loader": "^3.4.2",
     "html-webpack-plugin": "^3.2.0",
-    "http-server": "^0.11.1",
-    "mini-css-extract-plugin": "^0.8.0",
+    "http-server": "^0.12.1",
+    "mini-css-extract-plugin": "^0.9.0",
     "optimize-css-assets-webpack-plugin": "^5.0.3",
-    "style-loader": "^1.0.0",
-    "terser-webpack-plugin": "^2.1.0",
-    "webpack": "^4.40.2",
-    "webpack-cli": "^3.3.9",
-    "webpack-dev-server": "^3.8.1"
+    "style-loader": "^1.1.3",
+    "terser-webpack-plugin": "^2.3.5",
+    "webpack": "^4.41.6",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   }
 }
