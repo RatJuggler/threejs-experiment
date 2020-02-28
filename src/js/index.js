@@ -5,22 +5,47 @@ import * as THREE from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-var camera, scene, renderer, cube, stats, ctx, texture, textRepo;
+let camera, scene, renderer, cube, stats, texture, rainController;
 
-// The canvas and font sizes govern the number of rows and columns available for text.
-var font_size = 16;
-var render_font = font_size + "px arial";
-var rows, columns;
 
-// An array to hold the number of falling texts we want to show.
-var falling_text = new Array(6);
-
+// Knows how to render text on the canvas.
+class TextRenderer {
+    // ctx;     // context of the canvas to render on.
+    // height;  // to make the canvas.
+    // width;   // to make the canvas.
+    constructor(ctx, height, width) {
+        this.ctx = ctx;
+        this.ctx.canvas.height = height;
+        this.ctx.canvas.width = width;
+        // The canvas and font sizes govern the number of rows and columns available for text.
+        this.font_size = 16;
+        this.render_font = this.font_size + "px arial";
+        this.row_count = this.ctx.canvas.height / this.font_size;
+        this.column_count = this.ctx.canvas.width / this.font_size;
+    }
+    getRandomColumn() {
+        return Math.floor(Math.random() * this.column_count);
+    }
+    hasReachedBottom(row) {
+        return row > this.row_count
+    }
+    clearCanvas() {
+        this.ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+        this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    }
+    render(text, x, y) {
+        // Set green text in the required font then render text.
+        this.ctx.fillStyle = "#00FF00";
+        this.ctx.font = this.render_font;
+        this.ctx.fillText(text, x * this.font_size, y * this.font_size);
+    }
+}
 
 // A repository of the text available for falling.
 class TextRepository {
     //repository;  // Contains all the text we could use.
     //n;           // Index of the next text to use.
-    // Define the inital text to show while the file loads.
+    // Define the initial text to show while the file loads.
     constructor() {
         this.repository = ["TYRANNOSAURUS", "TRICERATOPS", "VELOCIRAPTOR", "STEGOSAURUS", "SPINOSAURUS", "ARCHAEOPTERYX", "BRACHIOSAURUS", "ALLOSAURUS", "APATOSAURUS", "DILOPHOSAURUS"];
         this.n = 0;
@@ -41,32 +66,59 @@ class TextRepository {
 
 // A piece of falling text.
 class FallingText {
-    //text;  // The text to display.
-    //x;     // It's column on the screen.
-    //y;     // It's row on the screen.
-    constructor(display_text, row_count, column_count) {
-        this.text = display_text;
-        // Start the text at a random point.
-        this.x = Math.floor(Math.random() * column_count);
-        this.y = Math.floor(Math.random() * row_count);
+    //textRepo;      // A repository of text to display.
+    //textRenderer;  // A renderer to display the text.
+    constructor(textRepo, textRenderer) {
+        this.textRepo = textRepo;
+        this.textRenderer = textRenderer;
+        // Start new details.
+        this.new();
     }
-    render(in_font_size) {
-        ctx.fillText(this.text, this.x * in_font_size, this.y * in_font_size);
+    new() {
+        this.text = this.textRepo.getNextText();
+        this.x = this.textRenderer.getRandomColumn();
+        this.y = 0;
     }
-    moveDown(row_count, column_count) {
+    render() {
+        this.textRenderer.render(this.text, this.x, this.y);
+    }
+    moveDown() {
         this.y++;
         // Grab a new text and send the falling item to a new starting position at the top of the screen once it has reached the bottom.
-        if (this.y > row_count && Math.random() > 0.9) {
-            this.text = textRepo.getNextText();
-            this.x = Math.floor(Math.random() * column_count);
-            this.y = 0;
+        // Include a random element so they start to appear at different times.
+        if (this.textRenderer.hasReachedBottom(this.y) && Math.random() > 0.9) {
+            this.new();
         }
     }
 }
 
-
-init();
-animate();
+class RainController {
+    // textRenderer;  // Knows how to render canvas and text.
+    constructor(textRenderer) {
+        this.textRenderer = textRenderer;
+        // Initialise an instance of the text repository.
+        let textRepo = new TextRepository();
+        // Populate initial display.
+        textRepo.populateFromFile("https://raw.githubusercontent.com/junosuarez/dinosaurs/master/dinosaurs.csv");
+        // An array to hold details of the falling text we want to show.
+        this.falling_text = new Array(6);
+        for (let i = 0; i < this.falling_text.length; i++) {
+            this.falling_text[i] = new FallingText(textRepo, this.textRenderer);
+        }
+    }
+    render() {
+        // Redraw the canvas on each tick of the interval.
+        this.textRenderer.clearCanvas();
+        // Loop through the texts to display...
+        for (let i = 0; i < this.falling_text.length; i++) {
+            let display_text = this.falling_text[i];
+            // Display the text.
+            display_text.render();
+            // Move it down the screen.
+            display_text.moveDown();
+        }
+    }
+}
 
 function init() {
     // Create a 3d renderer and add to page.
@@ -75,22 +127,13 @@ function init() {
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
 
-    // Create a 2d renderer and add to page.
-    ctx = document.createElement('canvas').getContext('2d');
+    // Create a 2d canvas and add to page.
+    let ctx = document.createElement('canvas').getContext('2d');
     document.body.appendChild(ctx.canvas);
-    ctx.canvas.width = 256;
-    ctx.canvas.height = 256;
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-
-    // Work out how many text rows and columns this gives us.
-    rows = ctx.canvas.height / font_size;
-    columns = ctx.canvas.width / font_size;
-    // Populate initial display.
-    textRepo = new TextRepository();
-    for(let i = 0; i < falling_text.length; i++) {
-        falling_text[i] = new FallingText(textRepo.getNextText(), rows, columns);
-    }
+    // Create a renderer using a set canvas size.
+    let textRenderer = new TextRenderer(ctx, 256, 256);
+    // Initialise everything.
+    rainController = new RainController(textRenderer);
 
     // Create and add stats to page.
     stats = new Stats();
@@ -150,7 +193,7 @@ function onWindowResize() {
 
 function animate() {
     requestAnimationFrame( animate );
-    rain();
+    rainController.render();
     texture.needsUpdate = true;
     cube.rotation.x += 0.01;
     cube.rotation.y += 0.01;
@@ -158,19 +201,5 @@ function animate() {
     stats.update();
 }
 
-function rain() {
-    // Use a black background for the canvas with translucency for the trail effect.
-    ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-    ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
-    // Set green text in the required font.
-    ctx.fillStyle = "#00FF00";
-    ctx.font = render_font;
-    // Loop through the texts to display...
-    for(let i = 0; i < falling_text.length; i++) {
-        let display_text = falling_text[i];
-        // Display the text.
-        display_text.render(font_size);
-        // Move it down the screen.
-        display_text.moveDown(rows, columns);
-    }
-}
+init();
+animate();
