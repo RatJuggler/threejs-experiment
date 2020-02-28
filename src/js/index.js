@@ -49,7 +49,7 @@ function init() {
 
     // Add camera control.
     let controls = new OrbitControls( camera, renderer.domElement );
-    controls.maxPolarAngle = Math.PI * 0.5;
+    controls.maxPolarAngle = Math.PI * 0.45;
     controls.minDistance = 10;
     controls.maxDistance = 50;
 
