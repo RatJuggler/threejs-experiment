@@ -169,13 +169,15 @@ function init() {
 
     // Create the camera and position above the ground.
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 100 );
-    camera.position.set( 0, 20, 20 );
+    camera.position.set( 0, 3, 10 );
 
     // Add camera control.
     let controls = new OrbitControls( camera, renderer.domElement );
+    controls.target.set(0, 3, 0);
     controls.maxPolarAngle = Math.PI * 0.45;
-    controls.minDistance = 10;
+    controls.minDistance = 7;
     controls.maxDistance = 50;
+    controls.update();
 
     // Add global lighting.
     let hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
