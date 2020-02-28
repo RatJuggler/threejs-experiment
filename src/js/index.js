@@ -144,14 +144,12 @@ function init() {
 
     // Create ground and add to scene.
     let groundGeometry = new THREE.PlaneBufferGeometry( 500, 500 );
-    let groundMaterial = new THREE.MeshPhongMaterial( { color: 0x999999, depthWrite: false } );
+    let groundMaterial = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, depthWrite: false } );
     let ground = new THREE.Mesh( groundGeometry, groundMaterial );
     ground.rotation.x = - Math.PI / 2;
     scene.add( ground );
     // Make it a grid.
-    let grid = new THREE.GridHelper( 500, 100, 0x000000, 0x000000 );
-    grid.material.opacity = 0.2;
-    grid.material.transparent = true;
+    let grid = new THREE.GridHelper( 500, 100);
     scene.add( grid );
 
     // Create cube and add to scene above the ground.
