@@ -18,7 +18,7 @@ class TextRenderer {
         this.ctx.canvas.height = height;
         this.ctx.canvas.width = width;
         // The canvas and font sizes govern the number of rows and columns available for text.
-        this.font_size = 16;
+        this.font_size = 24;
         this.render_font = this.font_size + "px arial";
         this.row_count = this.ctx.canvas.height / this.font_size;
         this.column_count = this.ctx.canvas.width / this.font_size;
@@ -47,7 +47,7 @@ class TextRepository {
     //n;           // Index of the next text to use.
     // Define the initial text to show while the file loads.
     constructor() {
-        this.repository = ["TYRANNOSAURUS", "TRICERATOPS", "VELOCIRAPTOR", "STEGOSAURUS", "SPINOSAURUS", "ARCHAEOPTERYX", "BRACHIOSAURUS", "ALLOSAURUS", "APATOSAURUS", "DILOPHOSAURUS"];
+        this.repository = ["α", "β", "γ", "δ", "ε", "ζ", "η", "θ", "ι", "κ"];
         this.n = 0;
     }
     populateFromFile(file) {
@@ -98,10 +98,8 @@ class RainController {
         this.textRenderer = textRenderer;
         // Initialise an instance of the text repository.
         let textRepo = new TextRepository();
-        // Populate initial display.
-        textRepo.populateFromFile("https://raw.githubusercontent.com/junosuarez/dinosaurs/master/dinosaurs.csv");
         // An array to hold details of the falling text we want to show.
-        this.falling_text = new Array(6);
+        this.falling_text = new Array(9);
         for (let i = 0; i < this.falling_text.length; i++) {
             this.falling_text[i] = new FallingText(textRepo, this.textRenderer);
         }
@@ -193,12 +191,19 @@ function onWindowResize() {
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
+let speed = 0;
+
 function animate() {
     requestAnimationFrame( animate );
-    rainController.render();
-    texture.needsUpdate = true;
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
+    if (speed < 3) {
+        speed++;
+    } else {
+        rainController.render();
+        texture.needsUpdate = true;
+        speed = 0;
+    }
+    cube.rotation.x += 0.02;
+    cube.rotation.y += 0.02;
     renderer.render( scene, camera );
     stats.update();
 }
