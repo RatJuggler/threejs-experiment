@@ -94,6 +94,8 @@ function onWindowResize() {
 }
 
 let speed = 0;
+let xRotation = [1, 1, -1, -1];
+let yRotation = [1, -1, 1, -1];
 
 function animate() {
     requestAnimationFrame( animate );
@@ -104,10 +106,10 @@ function animate() {
         texture.needsUpdate = true;
         speed = 0;
     }
-    cubes.forEach(cube => {
-        cube.rotation.x += 0.02;
-        cube.rotation.y += 0.02;
-    });
+    for (let n = 0; n < 4; n++) {
+        cubes[n].rotation.x += (xRotation[n] * 0.02);
+        cubes[n].rotation.y += (yRotation[n] * 0.02);
+    }
     renderer.render( scene, camera );
     stats.update();
 }
