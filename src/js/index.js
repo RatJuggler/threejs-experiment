@@ -6,8 +6,27 @@ import * as THREE from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-let camera, scene, renderer, cube, stats, texture, rainController;
+let camera, scene, renderer, cubes, stats, texture, rainController;
 
+function createCube(texture) {
+    let cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
+    // let cubeMaterial = new THREE.MeshNormalMaterial();
+    let cubeMaterial = new THREE.MeshBasicMaterial({
+        map: texture,
+    });
+    let cubes = [];
+    let xPosition = [7, 0, -7, 0];
+    let zPosition = [0, 7, 0, -7];
+    for (let n = 0; n < 4; n++) {
+        let cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        cube.position.x = xPosition[n];
+        cube.position.y = 5;
+        cube.position.z = zPosition[n];
+        cubes.push(cube);
+        scene.add(cube);
+    }
+    return cubes;
+}
 
 function init() {
     // Create a 3d renderer and add to page.
@@ -43,20 +62,14 @@ function init() {
     let grid = new THREE.GridHelper( 500, 100);
     scene.add( grid );
 
-    // Create cube and add to scene above the ground.
-    let cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
-    // let cubeMaterial = new THREE.MeshNormalMaterial();
+    // Create a texture based on the 2d canvas.
     texture = new THREE.CanvasTexture(ctx.canvas);
-    let cubeMaterial = new THREE.MeshBasicMaterial({
-        map: texture,
-    });
-    cube = new THREE.Mesh( cubeGeometry, cubeMaterial );
-    cube.position.y = 5;
-    scene.add( cube );
+    // Use that to create some cubes and add them to the scene above the ground.
+    cubes = createCube(texture, scene);
 
     // Create the camera and position above the ground.
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 100 );
-    camera.position.set( 0, 3, 10 );
+    camera.position.set( 0, 12, 20 );
 
     // Add camera control.
     let controls = new OrbitControls( camera, renderer.domElement );
@@ -91,8 +104,10 @@ function animate() {
         texture.needsUpdate = true;
         speed = 0;
     }
-    cube.rotation.x += 0.02;
-    cube.rotation.y += 0.02;
+    cubes.forEach(cube => {
+        cube.rotation.x += 0.02;
+        cube.rotation.y += 0.02;
+    });
     renderer.render( scene, camera );
     stats.update();
 }
