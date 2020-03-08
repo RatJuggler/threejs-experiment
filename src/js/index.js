@@ -22,6 +22,7 @@ function createCubes(texture) {
         cube.position.x = xPosition[n];
         cube.position.y = 5;
         cube.position.z = zPosition[n];
+        cube.castShadow = true;
         cubes.push(cube);
         scene.add(cube);
     }
@@ -34,6 +35,7 @@ function init() {
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
+    renderer.shadowMap.enabled = true;
 
     // Create a 2d canvas and add to page.
     let ctx = document.createElement('canvas').getContext('2d');
@@ -57,6 +59,7 @@ function init() {
     let groundMaterial = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, depthWrite: false } );
     let ground = new THREE.Mesh( groundGeometry, groundMaterial );
     ground.rotation.x = - Math.PI / 2;
+    ground.receiveShadow = true;
     scene.add( ground );
     // Make it a grid.
     let grid = new THREE.GridHelper( 500, 100);
@@ -85,6 +88,18 @@ function init() {
     scene.add( hemiLight );
     let hemiLightHelper = new THREE.HemisphereLightHelper( hemiLight, 6 );
     scene.add( hemiLightHelper );
+
+    // Add a spotlight to produce shadows.
+    let spotLight = new THREE.SpotLight( 0xffffff );
+    spotLight.position.set( 20, 40, 20 );
+    spotLight.castShadow = true;
+    spotLight.shadow.mapSize.width = 1024;
+    spotLight.shadow.mapSize.height = 1024;
+    spotLight.shadow.camera.near = 10;
+    spotLight.shadow.camera.far = 100;
+    scene.add( spotLight );
+    let spotLightHelper = new THREE.SpotLightHelper( spotLight );
+    scene.add( spotLightHelper );
 
     window.addEventListener( 'resize', onWindowResize, false );
 }
