@@ -8,7 +8,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 let camera, scene, renderer, cubes, stats, texture, rainController;
 
-function createCube(texture) {
+function createCubes(texture) {
     let cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
     // let cubeMaterial = new THREE.MeshNormalMaterial();
     let cubeMaterial = new THREE.MeshBasicMaterial({
@@ -65,7 +65,7 @@ function init() {
     // Create a texture based on the 2d canvas.
     texture = new THREE.CanvasTexture(ctx.canvas);
     // Use that to create some cubes and add them to the scene above the ground.
-    cubes = createCube(texture, scene);
+    cubes = createCubes(texture, scene);
 
     // Create the camera and position above the ground.
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 100 );
@@ -75,14 +75,16 @@ function init() {
     let controls = new OrbitControls( camera, renderer.domElement );
     controls.target.set(0, 3, 0);
     controls.maxPolarAngle = Math.PI * 0.45;
-    controls.minDistance = 7;
-    controls.maxDistance = 50;
+    controls.minDistance = 12;
+    controls.maxDistance = 70;
     controls.update();
 
-    // Add global lighting.
+    // Add global lighting with a helper to show its direction.
     let hemiLight = new THREE.HemisphereLight( 0xffffff, 0x444444 );
-    hemiLight.position.set( 0, 100, 0 );
+    hemiLight.position.set( 0, 40, 0 );
     scene.add( hemiLight );
+    let hemiLightHelper = new THREE.HemisphereLightHelper( hemiLight, 6 );
+    scene.add( hemiLightHelper );
 
     window.addEventListener( 'resize', onWindowResize, false );
 }
