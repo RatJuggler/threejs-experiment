@@ -33,6 +33,10 @@ $ npm run preview
 ```
 This will result in a "dist" folder containing all the required files bundled and minified CSS.
 
+## Screenshot
+
+![Screenshot](https://raw.githubusercontent.com/RatJuggler/threejs-experiment/master/screenshot.png)
+
 ## Credits
 
 Webpack build based on:
