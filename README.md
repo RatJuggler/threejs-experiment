@@ -1,6 +1,5 @@
 # threejs-experiment
 
-![GitHub](https://img.shields.io/github/license/RatJuggler/threejs-experiment)
 [![David](https://david-dm.org/RatJuggler/threejs-experiment/dev-status.svg)](https://david-dm.org/RatJuggler/threejs-experiment?type=dev)
 [![David](https://david-dm.org/RatJuggler/threejs-experiment/status.svg)](https://david-dm.org/RatJuggler/threejs-experiment)
 ![GitHub](https://img.shields.io/github/package-json/v/RatJuggler/threejs-experiment)
