@@ -52,17 +52,17 @@ function init() {
     // Create scene.
     scene = new THREE.Scene();
     scene.background = new THREE.Color( 0xe0e0e0 );
-    scene.fog = new THREE.Fog( 0xe0e0e0, 20, 100 );
+    scene.fog = new THREE.Fog( 0xe0e0e0, 80, 100 );
 
     // Create ground and add to scene.
-    let groundGeometry = new THREE.PlaneBufferGeometry( 500, 500 );
+    let groundGeometry = new THREE.PlaneBufferGeometry( 300, 300 );
     let groundMaterial = new THREE.MeshPhongMaterial( { color: 0xaaaaaa, depthWrite: false } );
     let ground = new THREE.Mesh( groundGeometry, groundMaterial );
     ground.rotation.x = - Math.PI / 2;
     ground.receiveShadow = true;
     scene.add( ground );
     // Make it a grid.
-    let grid = new THREE.GridHelper( 500, 100);
+    let grid = new THREE.GridHelper( 300, 100);
     scene.add( grid );
 
     // Create a texture based on the 2d canvas.
