@@ -6,7 +6,7 @@
 ![GitHub](https://img.shields.io/github/package-json/v/RatJuggler/threejs-experiment)
 
 
-A project to explore the basics of three.js.
+A project to explore the basics of three.js. See it running [here](https://ratjuggler.github.io/threejs-experiment/).
 
 ## Building the experiment
 
