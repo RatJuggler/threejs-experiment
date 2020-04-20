@@ -7,3 +7,6 @@
 
 # Ignore distribution build
 /dist/
+
+# Ignore any Javascript map files.
+*.js.map
