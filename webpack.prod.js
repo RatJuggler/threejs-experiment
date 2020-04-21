@@ -10,8 +10,9 @@ module.exports = env => {
 
     let generating = 'Generating: ';
     if (!env || !env.generate || !['dist', 'docs'].includes(env.generate)) {
-        env = {};
-        env.generate = 'dist';
+        env = {
+            'generate': 'dist'
+        };
         generating = 'Generate not defined, defaulting to: ';
     }
     console.log(generating + env.generate);
