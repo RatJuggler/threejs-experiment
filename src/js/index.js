@@ -6,6 +6,12 @@ import * as THREE from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+const CUBE_DEFINITIONS = [
+    {x: 7, z: 0, dx: 1, dy: 1},
+    {x: 0, z: 7, dx: 1, dy: -1},
+    {x: -7, z: 0, dx: -1, dy: -1},
+    {x: 0, z: -7, dx: -1, dy: 1}]
+
 let camera, scene, renderer, cubes, stats, texture, rainController;
 
 function createCubes(texture) {
@@ -15,17 +21,15 @@ function createCubes(texture) {
         map: texture,
     });
     let cubes = [];
-    let xPosition = [7, 0, -7, 0];
-    let zPosition = [0, 7, 0, -7];
-    for (let n = 0; n < 4; n++) {
+    CUBE_DEFINITIONS.forEach(definition => {
         let cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-        cube.position.x = xPosition[n];
-        cube.position.y = 5;
-        cube.position.z = zPosition[n];
+        cube.position.set(definition.x, 5, definition.z);
         cube.castShadow = true;
+        cube.xRotation = definition.dx
+        cube.yRotation = definition.dy
         cubes.push(cube);
         scene.add(cube);
-    }
+    })
     return cubes;
 }
 
@@ -111,8 +115,6 @@ function onWindowResize() {
 }
 
 let speed = 0;
-let xRotation = [1, 1, -1, -1];
-let yRotation = [1, -1, 1, -1];
 
 function animate() {
     requestAnimationFrame( animate );
@@ -123,10 +125,10 @@ function animate() {
         texture.needsUpdate = true;
         speed = 0;
     }
-    for (let n = 0; n < 4; n++) {
-        cubes[n].rotation.x += (xRotation[n] * 0.02);
-        cubes[n].rotation.y += (yRotation[n] * 0.02);
-    }
+    cubes.forEach(cube => {
+        cube.rotation.x += (cube.xRotation * 0.02);
+        cube.rotation.y += (cube.yRotation * 0.02);
+    })
     renderer.render( scene, camera );
     stats.update();
 }
