@@ -2,6 +2,7 @@
   "Title": "three.js Experiment",
   "name": "threejs-experiment",
   "version": "0.0.1",
+  "private": true,
   "description": "Experiment with some basic three.js concepts.",
   "main": "index.js",
   "scripts": {
