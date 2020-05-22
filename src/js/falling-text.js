@@ -91,6 +91,7 @@ class RainController {
         let textRepo = new TextRepository();
         // An array to hold details of the falling text we want to show.
         this.falling_text = new Array(9);
+        // Use the text repository to initialise the falling text.
         for (let i = 0; i < this.falling_text.length; i++) {
             this.falling_text[i] = new FallingText(textRepo, this.textRenderer);
         }
@@ -99,13 +100,12 @@ class RainController {
         // Redraw the canvas on each render pass.
         this.textRenderer.clearCanvas();
         // Loop through the texts to display...
-        for (let i = 0; i < this.falling_text.length; i++) {
-            let display_text = this.falling_text[i];
+        this.falling_text.forEach(display_text => {
             // Display the text.
             display_text.render();
             // Move it down the screen.
             display_text.moveDown();
-        }
+        })
     }
 }
 
