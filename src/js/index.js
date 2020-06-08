@@ -7,10 +7,10 @@ import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 const CUBE_DEFINITIONS = [
-    {x: 7, z: 0, dx: 1, dy: 1},
-    {x: 0, z: 7, dx: 1, dy: -1},
-    {x: -7, z: 0, dx: -1, dy: -1},
-    {x: 0, z: -7, dx: -1, dy: 1}]
+    {x: 7,  y: 5, z: 0,  dx: 1,  dy: 1,  dz: -1},
+    {x: 0,  y: 5, z: 7,  dx: 1,  dy: -1, dz: 1},
+    {x: -7, y: 5, z: 0,  dx: -1, dy: -1, dz: -1},
+    {x: 0,  y: 5, z: -7, dx: -1, dy: 1,  dz: 1}]
 
 let camera, scene, renderer, cubes, stats, texture, rainController;
 
@@ -23,10 +23,11 @@ function createCubes(texture) {
     let cubes = [];
     CUBE_DEFINITIONS.forEach(definition => {
         let cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
-        cube.position.set(definition.x, 5, definition.z);
+        cube.position.set(definition.x, definition.y, definition.z);
         cube.castShadow = true;
-        cube.xRotation = definition.dx
-        cube.yRotation = definition.dy
+        cube.xRotation = definition.dx;
+        cube.yRotation = definition.dy;
+        cube.zRotation = definition.dz;
         cubes.push(cube);
         scene.add(cube);
     })
@@ -128,6 +129,7 @@ function animate() {
     cubes.forEach(cube => {
         cube.rotation.x += (cube.xRotation * 0.02);
         cube.rotation.y += (cube.yRotation * 0.02);
+        cube.rotation.z += (cube.zRotation * 0.02);
     })
     renderer.render( scene, camera );
     stats.update();
