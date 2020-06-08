@@ -84,9 +84,12 @@ class FallingText {
 
 // Creates falling texts and then renders and updates them.
 class RainController {
-    // textRenderer;  // Knows how to render canvas and text.
-    constructor(textRenderer) {
-        this.textRenderer = textRenderer;
+    constructor() {
+        // Create a 2d canvas and add to page.
+        this.ctx = document.createElement('canvas').getContext('2d');
+        document.body.appendChild(this.ctx.canvas);
+        // Create a renderer using a set canvas size.
+        this.textRenderer = new TextRenderer(this.ctx, 256, 256);
         // Initialise an instance of the text repository.
         let textRepo = new TextRepository();
         // An array to hold details of the falling text we want to show.
@@ -95,6 +98,9 @@ class RainController {
         for (let i = 0; i < this.falling_text.length; i++) {
             this.falling_text[i] = new FallingText(textRepo, this.textRenderer);
         }
+    }
+    getCanvas() {
+        return this.ctx.canvas;
     }
     render() {
         // Redraw the canvas on each render pass.
@@ -109,4 +115,4 @@ class RainController {
     }
 }
 
-export {TextRenderer, TextRepository, FallingText, RainController};
+export {RainController};

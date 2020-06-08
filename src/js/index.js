@@ -12,10 +12,11 @@ const CUBE_DEFINITIONS = [
     {x: -7, y: 5, z: 0,  dx: -1, dy: -1, dz: -1},
     {x: 0,  y: 5, z: -7, dx: -1, dy: 1,  dz: 1}]
 
-let camera, scene, renderer, cubes, stats, texture, rainController;
+let camera, scene, renderer, cubes, stats;
 
-function createCubes(texture) {
+function createCubes(texture, scene) {
     let cubeGeometry = new THREE.BoxGeometry( 4, 4, 4 );
+    // Test material for cubes.
     // let cubeMaterial = new THREE.MeshNormalMaterial();
     let cubeMaterial = new THREE.MeshBasicMaterial({
         map: texture,
@@ -42,14 +43,6 @@ function init() {
     document.body.appendChild( renderer.domElement );
     renderer.shadowMap.enabled = true;
 
-    // Create a 2d canvas and add to page.
-    let ctx = document.createElement('canvas').getContext('2d');
-    document.body.appendChild(ctx.canvas);
-    // Create a renderer using a set canvas size.
-    let textRenderer = new FT.TextRenderer(ctx, 256, 256);
-    // Initialise everything.
-    rainController = new FT.RainController(textRenderer);
-
     // Create and add stats to page.
     stats = new Stats();
     document.body.appendChild( stats.dom );
@@ -70,10 +63,12 @@ function init() {
     let grid = new THREE.GridHelper( 300, 100);
     scene.add( grid );
 
-    // Create a texture based on the 2d canvas.
-    texture = new THREE.CanvasTexture(ctx.canvas);
-    // Use that to create some cubes and add them to the scene above the ground.
-    cubes = createCubes(texture, scene);
+    // Create the dynamic canvas renderer.
+    let rainController = new FT.RainController();
+    // Create a texture based on the dynamic canvas.
+    let dynamicTexture = new THREE.CanvasTexture(rainController.getCanvas());
+    // Use that to create some cubes and add them to the scene.
+    cubes = createCubes(dynamicTexture, scene);
 
     // Create the camera and position above the ground.
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 100 );
@@ -106,6 +101,12 @@ function init() {
     let spotLightHelper = new THREE.SpotLightHelper( spotLight );
     scene.add( spotLightHelper );
 
+    // Update the dynamic canvas/texture every interval.
+    window.setInterval(() => {
+        rainController.render();
+        dynamicTexture.needsUpdate = true;
+    }, 100);
+    // Deal with window resizing.
     window.addEventListener( 'resize', onWindowResize, false );
 }
 
@@ -115,17 +116,8 @@ function onWindowResize() {
     renderer.setSize( window.innerWidth, window.innerHeight );
 }
 
-let speed = 0;
-
 function animate() {
     requestAnimationFrame( animate );
-    if (speed < 3) {
-        speed++;
-    } else {
-        rainController.render();
-        texture.needsUpdate = true;
-        speed = 0;
-    }
     cubes.forEach(cube => {
         cube.rotation.x += (cube.xRotation * 0.02);
         cube.rotation.y += (cube.yRotation * 0.02);
