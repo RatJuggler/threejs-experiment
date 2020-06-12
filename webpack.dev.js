@@ -4,7 +4,7 @@ module.exports = {
 
     // This option controls if and how source maps are generated.
     // https://webpack.js.org/configuration/devtool/
-    devtool: 'eval-cheap-module-source-map',
+    devtool: 'eval-source-map',
 
     // https://webpack.js.org/concepts/entry-points/#multi-page-application
     entry: {
@@ -32,10 +32,10 @@ module.exports = {
 
     // https://webpack.js.org/concepts/plugins/
     plugins: [
+        // https://github.com/jantimon/html-webpack-plugin
         new HtmlWebpackPlugin({
             template: './src/template.html',
             inject: true,
-            chunks: ['index'],
             filename: 'index.html'
         })
     ]

@@ -3,7 +3,6 @@ const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = env => {
@@ -52,8 +51,7 @@ module.exports = env => {
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
                 template: './src/template.html',
-                inject: 'body',
-                chunks: ['index'],
+                inject: true,
                 filename: 'index.html'
             }),
             new MiniCssExtractPlugin({
@@ -72,8 +70,7 @@ module.exports = env => {
                     terserOptions: {
                         ecma: 6
                     }
-                }),
-                new OptimizeCssAssetsPlugin({})
+                })
             ]
         }
     };
