@@ -66,10 +66,7 @@ module.exports = env => {
                 new TerserPlugin({
                     cache: true,
                     parallel: true,
-                    sourceMap: true,
-                    terserOptions: {
-                        ecma: 6
-                    }
+                    sourceMap: true
                 })
             ]
         }

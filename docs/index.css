@@ -1,1 +1,16 @@
-body{margin:0;overflow:hidden}.page-title{font-size:1.5em;font-weight:700;text-align:center;word-break:break-all;line-height:.85;color:green}
+body {
+  margin: 0;
+  overflow: hidden;
+}
+
+.page-title {
+  font-size: 1.5em;
+  font-weight: bold;
+  text-align: center;
+  word-break: break-all;
+  line-height: 0.85;
+  color: green;
+}
+
+
+/*# sourceMappingURL=index.css.map*/
