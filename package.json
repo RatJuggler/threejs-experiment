@@ -23,7 +23,7 @@
     "url": "https://github.com/RatJuggler/threejs-experiment/issues"
   },
   "dependencies": {
-    "three": "^0.126.0"
+    "three": "^0.137.0"
   },
   "devDependencies": {
     "clean-webpack-plugin": "^3.0.0",
